@@ -1,10 +1,12 @@
-const Job = require('../model/Job')
+const { Database } = require('sqlite');
+const Job = require('../model/Job');
+const { update } = require('../model/Profile');
 const Profile = require('../model/Profile')
 const JobUtils = require( '../utils/JobUtils')
 
 module.exports = {
   async index(req, res) {
-    const jobs = Job.get();
+    const jobs = await Job.get();
     const profile = await Profile.get();
 
     let statusCount = {
@@ -42,5 +44,5 @@ module.exports = {
     const freeHours = profile["hours-per-day"] - jobTotalHours
     
     return res.render("index", { jobs: updatedJobs, profile: profile, statusCount: statusCount, freeHours: freeHours })
-  }
+  },
 }
